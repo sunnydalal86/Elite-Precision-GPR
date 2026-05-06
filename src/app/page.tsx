@@ -382,7 +382,7 @@ function TrustStrip() {
                 className={company.slotClassName ?? defaultSlot}
               >
                 {company.kind === "google" ? (
-                  <span className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                  <span className="inline-flex trust-strip-logo">
                     <GoogleWordmark />
                   </span>
                 ) : (
@@ -394,7 +394,7 @@ function TrustStrip() {
                       company.sizes ??
                       "(max-width: 768px) 160px, 174px"
                     }
-                    className="object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    className="object-contain trust-strip-logo"
                   />
                 )}
               </div>

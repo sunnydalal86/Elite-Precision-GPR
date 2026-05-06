@@ -178,6 +178,25 @@ body {
   background: rgba(255, 255, 255, 0.035);
 }
 
+/* Trust strip: full color on touch / mobile; mute + hover-reveal on mouse devices */
+.trust-strip-logo {
+  opacity: 1;
+  filter: grayscale(0);
+  transition: filter 300ms ease, opacity 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trust-strip-logo {
+    filter: grayscale(1);
+    opacity: 0.6;
+  }
+
+  .trust-strip-logo:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
 input, textarea, select {
   font-family: inherit;
 }
