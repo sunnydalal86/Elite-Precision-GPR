@@ -17,9 +17,11 @@ import {
   Users,
   Layers,
   ScanLine,
+  Menu,
+  X,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -46,70 +48,132 @@ const navItems = [
 ] as const;
 
 function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const closeMobile = () => setMobileOpen(false);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 h-16 md:h-20">
-          <a
-            href="#"
-            className="flex shrink-0 items-center gap-2 sm:gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] md:min-w-0"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#ff8c5a] rounded-lg flex items-center justify-center shrink-0">
-              <Radar className="w-6 h-6 text-white" />
-            </div>
-            <div className="hidden min-[380px]:block">
-              <span className="text-lg font-bold tracking-tight">
-                Elite Precision
-              </span>
-              <span className="text-[#ff6b35] font-bold ml-1">GPR</span>
-            </div>
-          </a>
-
-          <div className="flex min-w-0 flex-1 items-center justify-end gap-2 md:gap-4">
-            <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              {navItems.map((item) => (
-                <a key={item.href} href={item.href} className={navLinkClass}>
-                  {item.label}
-                </a>
-              ))}
-              <a
-                href="#contact"
-                className="px-5 py-2.5 bg-[#ff6b35] hover:bg-[#ff8c5a] text-white text-sm font-semibold rounded-lg transition-all duration-200"
-              >
-                Request a Quote
-              </a>
-            </div>
-
-            <div
-              className="flex md:hidden max-w-[100%] items-center gap-2 overflow-x-auto py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-3 h-16 md:h-20">
+            <a
+              href="#"
+              className="flex shrink-0 items-center gap-2 sm:gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] md:min-w-0"
+              onClick={(e) => {
+                e.preventDefault();
+                closeMobile();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
             >
-              {navItems.map((item) => (
+              <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#ff8c5a] rounded-lg flex items-center justify-center shrink-0">
+                <Radar className="w-6 h-6 text-white" />
+              </div>
+              <div className="hidden min-[380px]:block">
+                <span className="text-lg font-bold tracking-tight">
+                  Elite Precision
+                </span>
+                <span className="text-[#ff6b35] font-bold ml-1">GPR</span>
+              </div>
+            </a>
+
+            <div className="flex items-center justify-end gap-2">
+              <div className="hidden md:flex items-center gap-6 lg:gap-8">
+                {navItems.map((item) => (
+                  <a key={item.href} href={item.href} className={navLinkClass}>
+                    {item.label}
+                  </a>
+                ))}
                 <a
-                  key={item.href}
-                  href={item.href}
-                  className="shrink-0 text-xs text-gray-300 transition-colors hover:text-white"
+                  href="#contact"
+                  className="px-5 py-2.5 bg-[#ff6b35] hover:bg-[#ff8c5a] text-white text-sm font-semibold rounded-lg transition-all duration-200"
                 >
-                  {item.label}
+                  Request a Quote
                 </a>
-              ))}
-              <span className="shrink-0 text-gray-600" aria-hidden>
-                |
-              </span>
-              <a
-                href="#contact"
-                className="shrink-0 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8c5a]"
+              </div>
+
+              <button
+                type="button"
+                className="flex md:hidden h-11 w-11 items-center justify-center rounded-lg text-white outline-none transition-colors hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#ff6b35]"
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-nav-overlay"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                onClick={() => setMobileOpen((o) => !o)}
               >
-                Quote
-              </a>
+                {mobileOpen ? (
+                  <X className="h-6 w-6" aria-hidden />
+                ) : (
+                  <Menu className="h-6 w-6" aria-hidden />
+                )}
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {mobileOpen ? (
+        <div
+          id="mobile-nav-overlay"
+          className="fixed inset-0 z-[200] flex flex-col md:hidden bg-[#0a0a0a]/98 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-nav-title"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-[#ff6b35]/[0.07] to-transparent pointer-events-none" />
+          <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4">
+            <span id="mobile-nav-title" className="text-sm font-semibold tracking-wide text-gray-400 uppercase">
+              Menu
+            </span>
+            <button
+              type="button"
+              className="flex h-11 w-11 items-center justify-center rounded-lg text-white outline-none transition-colors hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#ff6b35]"
+              aria-label="Close menu"
+              onClick={closeMobile}
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <nav className="relative flex flex-1 flex-col gap-1 overflow-y-auto px-6 py-8">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="border-b border-white/5 py-4 text-lg font-medium text-white transition-colors hover:text-[#ff6b35]"
+                onClick={closeMobile}
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href="#contact"
+              className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#ff6b35] px-5 py-4 text-center text-base font-semibold text-white transition-colors hover:bg-[#ff8c5a]"
+              onClick={closeMobile}
+            >
+              Request a Quote
+            </a>
+          </nav>
+        </div>
+      ) : null}
+    </>
   );
 }
 
