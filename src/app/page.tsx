@@ -19,6 +19,9 @@ import {
   ScanLine,
   Menu,
   X,
+  Zap,
+  CircleDollarSign,
+  Construction,
 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -180,10 +183,27 @@ function Navbar() {
 function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      {/* Background layers */}
       <div className="absolute inset-0 bg-[#0a0a0a]/78">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/90 via-transparent to-[#0a0a0a]/90" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#ff6b35]/5 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#ff6b35]/3 rounded-full blur-[80px]" />
+      </div>
+
+      {/* Hero-specific grid ticks */}
+      <div className="absolute inset-0 hero-layer-grid opacity-60" aria-hidden="true" />
+
+      {/* Animated scan line */}
+      <div className="hero-scan-line" aria-hidden="true" />
+
+      {/* Corner utility readout */}
+      <div
+        className="absolute bottom-8 right-8 hidden lg:block font-mono text-[10px] text-white/20 leading-relaxed select-none"
+        aria-hidden="true"
+      >
+        SCAN SECTOR · LOC-01<br />
+        DEPTH: 0–15 ft<br />
+        MODE: GPR 400 MHz
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
@@ -193,6 +213,13 @@ function HeroSection() {
           variants={staggerContainer}
           className="text-center"
         >
+          <motion.p
+            variants={fadeInUp}
+            className="text-xs sm:text-sm uppercase tracking-[0.2em] text-gray-500 mb-4 font-medium"
+          >
+            Underground utility locating &amp; GPR
+          </motion.p>
+
           <motion.div
             variants={fadeInUp}
             className="inline-flex items-center gap-2 px-4 py-2 bg-[#ff6b35]/10 border border-[#ff6b35]/20 rounded-full mb-8"
@@ -205,7 +232,7 @@ function HeroSection() {
 
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+            className="max-w-4xl mx-auto text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="gradient-text">Precision Utility Locating</span>
             <br />
@@ -214,11 +241,11 @@ function HeroSection() {
 
           <motion.p
             variants={fadeInUp}
-            className="max-w-3xl mx-auto text-lg md:text-xl text-gray-400 mb-10 leading-relaxed"
+            className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-400 mb-10 leading-relaxed"
           >
             Accurate underground scanning, concrete imaging, and subsurface
-            investigation for contractors, engineers, environmental firms, and
-            project managers.
+            investigation. We help contractors, engineers, and project managers{" "}
+            <span className="text-gray-300">dig safely and stay on schedule.</span>
           </motion.p>
 
           <motion.div
@@ -242,23 +269,29 @@ function HeroSection() {
 
           <motion.div
             variants={fadeInUp}
-            className="flex items-center justify-center gap-6 text-sm text-gray-500"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500"
           >
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-[#ff6b35]" />
               <span>Safety-focused</span>
             </div>
-            <div className="w-1 h-1 bg-gray-600 rounded-full" />
+            <div className="hidden sm:block w-1 h-1 bg-gray-600 rounded-full" />
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#ff6b35]" />
               <span>Field-tested</span>
             </div>
-            <div className="w-1 h-1 bg-gray-600 rounded-full" />
+            <div className="hidden sm:block w-1 h-1 bg-gray-600 rounded-full" />
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[#ff6b35]" />
               <span>Fast turnaround</span>
             </div>
           </motion.div>
+
+          <motion.p variants={fadeInUp} className="mt-6 text-xs text-gray-600">
+            <a href="#contact" className="hover:text-gray-400 transition-colors">
+              Emergency &amp; fast-turnaround locating available →
+            </a>
+          </motion.p>
         </motion.div>
       </div>
 
@@ -327,7 +360,7 @@ function TrustStrip() {
   ];
 
   return (
-    <section className="py-12 md:py-16 border-y border-white/5 bg-[#0d0d0d]/94 backdrop-blur-[1px]">
+    <section className="py-14 md:py-18 border-y border-white/5 bg-[#0d0d0d]/94 backdrop-blur-[1px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -335,8 +368,11 @@ function TrustStrip() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <p className="text-sm text-gray-500 mb-8 tracking-wide uppercase">
+          <p className="text-sm text-gray-500 mb-2 tracking-wide uppercase">
             Trusted by teams working with companies like
+          </p>
+          <p className="text-xs text-gray-600 mb-8">
+            Crews trusted on contractor, engineer, and public works projects.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
             {companies.map((company) => (
@@ -345,7 +381,9 @@ function TrustStrip() {
                 className={company.slotClassName ?? defaultSlot}
               >
                 {company.kind === "google" ? (
-                  <GoogleWordmark />
+                  <span className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    <GoogleWordmark />
+                  </span>
                 ) : (
                   <Image
                     src={company.src}
@@ -355,12 +393,100 @@ function TrustStrip() {
                       company.sizes ??
                       "(max-width: 768px) 160px, 174px"
                     }
-                    className="object-contain"
+                    className="object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   />
                 )}
               </div>
             ))}
           </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function WhyItMattersSection() {
+  const cards = [
+    {
+      icon: CircleDollarSign,
+      title: "Avoid Costly Strikes",
+      body: "A single utility hit can exceed $50K in repairs, fines, and downtime.",
+    },
+    {
+      icon: Clock,
+      title: "Prevent Delays",
+      body: "Unplanned incidents stall projects by weeks — keep your schedule intact.",
+    },
+    {
+      icon: Shield,
+      title: "Protect Your Crew",
+      body: "Buried gas, electric, and fiber lines pose serious safety hazards.",
+    },
+    {
+      icon: Construction,
+      title: "Active Jobsite Support",
+      body: "Real-time locating for live excavation and trenching operations.",
+    },
+    {
+      icon: FileText,
+      title: "Meet Compliance",
+      body: "Satisfy 811, OSHA, and local agency requirements with documented locates.",
+    },
+    {
+      icon: Zap,
+      title: "Plan with Confidence",
+      body: "Accurate subsurface data lets you bid, scope, and execute precisely.",
+    },
+  ];
+
+  return (
+    <section
+      id="why-it-matters"
+      className="scroll-mt-24 py-24 md:scroll-mt-28 md:py-36"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <span className="inline-block px-3 py-1 bg-[#ff6b35]/10 border border-[#ff6b35]/20 rounded-full text-sm text-[#ff6b35] font-medium mb-6">
+            Why It Matters
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+            Avoid Delays. <span className="text-[#ff6b35]">Prevent Damage.</span> Build Safely.
+          </h2>
+          <p className="max-w-2xl mx-auto text-gray-400 text-lg leading-relaxed">
+            Every excavation carries risk. Unmarked utilities, outdated records,
+            and subsurface unknowns put your budget, timeline, and crew at stake.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        >
+          {cards.map((card) => (
+            <motion.div
+              key={card.title}
+              variants={fadeInUp}
+              className="surface-card rounded-xl p-6"
+            >
+              <div className="w-10 h-10 bg-[#ff6b35]/10 rounded-lg flex items-center justify-center mb-4">
+                <card.icon className="w-5 h-5 text-[#ff6b35]" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {card.title}
+              </h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {card.body}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
@@ -394,7 +520,7 @@ function AboutSection() {
   return (
     <section
       id="about"
-      className="relative scroll-mt-24 py-20 md:scroll-mt-28 md:py-32"
+      className="relative scroll-mt-24 py-24 md:scroll-mt-28 md:py-36"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -424,7 +550,7 @@ function AboutSection() {
               {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className="flex items-start gap-3 p-4 bg-white/[0.02] rounded-lg border border-white/5"
+                  className="flex items-start gap-3 p-4 surface-card rounded-lg"
                 >
                   <feature.icon className="w-5 h-5 text-[#ff6b35] mt-0.5 flex-shrink-0" />
                   <div>
@@ -520,7 +646,7 @@ function ServicesSection() {
   return (
     <section
       id="services"
-      className="scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
+      className="scroll-mt-24 bg-[#0d0d0d]/94 py-24 backdrop-blur-[1px] md:scroll-mt-28 md:py-36 border-t border-white/5"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -552,7 +678,7 @@ function ServicesSection() {
             <motion.div
               key={service.title}
               variants={fadeInUp}
-              className="group p-6 bg-[#1a1a1a]/50 rounded-xl border border-white/5 hover:border-[#ff6b35]/20 transition-all duration-300"
+              className="group p-6 surface-card rounded-xl"
             >
               <div className="w-12 h-12 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-[#ff6b35]/20 transition-colors">
                 <service.icon className="w-6 h-6 text-[#ff6b35]" />
@@ -584,7 +710,7 @@ function SafetySection() {
   return (
     <section
       id="safety"
-      className="relative scroll-mt-24 overflow-hidden py-20 md:scroll-mt-28 md:py-32"
+      className="relative scroll-mt-24 overflow-hidden py-24 md:scroll-mt-28 md:py-36"
     >
       {/* Calm base so the global grid doesn&apos;t compete with orange accents */}
       <div className="absolute inset-0 z-0 bg-[#0a0a0a]/90" />
@@ -619,7 +745,7 @@ function SafetySection() {
               {benefits.map((benefit) => (
                 <div
                   key={benefit.text}
-                  className="flex items-center gap-3 p-3 bg-white/[0.02] rounded-lg border border-white/5"
+                  className="flex items-center gap-3 p-3 surface-card rounded-lg"
                 >
                   <benefit.icon className="w-5 h-5 text-[#ff6b35] flex-shrink-0" />
                   <span className="text-gray-300 font-medium">
@@ -686,18 +812,18 @@ function SafetySection() {
 
 function GallerySection() {
   const galleryItems = [
-    { title: "Utility Locating", category: "Field Work" },
-    { title: "Concrete Scanning", category: "Imaging" },
-    { title: "GPR Field Scan", category: "Survey" },
-    { title: "CAD Documentation", category: "Deliverables" },
-    { title: "Public Works Support", category: "Infrastructure" },
-    { title: "Jobsite Safety", category: "Consultation" },
+    { title: "Utility Scan — San Jose, CA", tag: "GPR", span: true },
+    { title: "Concrete Imaging — Commercial Site", tag: "IMAGING", span: false },
+    { title: "Public Works Utility Mapping", tag: "UTILITY", span: false },
+    { title: "GPR Safety Scan", tag: "GPR", span: false },
+    { title: "Subsurface Investigation — Industrial", tag: "SURVEY", span: false },
+    { title: "CAD Mapping Deliverable", tag: "CAD", span: true },
   ];
 
   return (
     <section
       id="our-work"
-      className="scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
+      className="scroll-mt-24 bg-[#0d0d0d]/94 py-24 backdrop-blur-[1px] md:scroll-mt-28 md:py-36"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -723,23 +849,25 @@ function GallerySection() {
           whileInView="animate"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[240px] lg:auto-rows-[280px]"
         >
-          {galleryItems.map((item, index) => (
+          {galleryItems.map((item) => (
             <motion.div
               key={item.title}
               variants={fadeInUp}
-              className="group relative aspect-[4/3] bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 hover:border-[#ff6b35]/20 transition-all duration-300"
+              className={`group relative bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 hover:border-[#ff6b35]/20 transition-all duration-300 ${
+                item.span ? "lg:col-span-2" : ""
+              }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <ScanLine className="w-16 h-16 text-[#ff6b35]/20 group-hover:text-[#ff6b35]/30 transition-colors" />
+                <ScanLine className="w-14 h-14 text-[#ff6b35]/15 group-hover:text-[#ff6b35]/25 group-hover:scale-105 transition-all duration-300" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-5">
-                <span className="text-xs text-[#ff6b35] font-medium uppercase tracking-wider">
-                  {item.category}
+                <span className="inline-block px-2 py-0.5 bg-[#ff6b35]/10 border border-[#ff6b35]/20 rounded text-[10px] font-mono text-[#ff6b35] tracking-wider mb-2">
+                  {item.tag}
                 </span>
-                <h3 className="text-lg font-semibold text-white mt-1">
+                <h3 className="text-base font-semibold text-white leading-snug">
                   {item.title}
                 </h3>
               </div>
@@ -779,7 +907,7 @@ function ProcessSection() {
   return (
     <section
       id="process"
-      className="relative scroll-mt-24 py-20 md:scroll-mt-28 md:py-32"
+      className="relative scroll-mt-24 py-24 md:scroll-mt-28 md:py-36 border-t border-white/5"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -856,7 +984,7 @@ function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
+      className="relative scroll-mt-24 bg-[#0d0d0d]/94 py-24 backdrop-blur-[1px] md:scroll-mt-28 md:py-36 border-t border-white/5"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
@@ -872,13 +1000,17 @@ function ContactSection() {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               Request a Quote
             </h2>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+            <p className="text-gray-400 text-lg mb-4 leading-relaxed">
               Need utility locating or GPR scanning for an upcoming project?
               Send a few details and we&apos;ll help you plan the next step.
             </p>
+            <p className="text-sm text-[#ff6b35]/80 mb-8 flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Emergency &amp; fast-turnaround scheduling available for active jobsites.
+            </p>
 
             <div className="space-y-6">
-              <div className="flex items-center gap-4 p-4 bg-white/[0.02] rounded-xl border border-white/5">
+              <div className="flex items-center gap-4 p-4 surface-card rounded-xl">
                 <div className="w-12 h-12 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5 text-[#ff6b35]" />
                 </div>
@@ -887,7 +1019,7 @@ function ContactSection() {
                   <p className="text-white font-semibold">(555) 123-4567</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 p-4 bg-white/[0.02] rounded-xl border border-white/5">
+              <div className="flex items-center gap-4 p-4 surface-card rounded-xl">
                 <div className="w-12 h-12 bg-[#ff6b35]/10 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-[#ff6b35]" />
                 </div>
@@ -1093,6 +1225,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <TrustStrip />
+      <WhyItMattersSection />
       <AboutSection />
       <ServicesSection />
       <SafetySection />
