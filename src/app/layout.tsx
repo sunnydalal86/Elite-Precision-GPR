@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://eliteprecisiongpr.com"),
   title: "Elite Precision GPR | Utility Locating & GPR Services",
   description:
     "Accurate underground scanning, concrete imaging, and subsurface investigation for contractors, engineers, environmental firms, and project managers. Prevent costly utility strikes before they happen.",

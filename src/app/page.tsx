@@ -44,6 +44,7 @@ const navLinkClass =
   "shrink-0 text-sm text-gray-300 transition-colors hover:text-white whitespace-nowrap";
 
 const navItems = [
+  { href: "#why-it-matters", label: "Why It Matters" },
   { href: "#about", label: "About Us" },
   { href: "#safety", label: "Safety First" },
   { href: "#our-work", label: "Our Work" },
