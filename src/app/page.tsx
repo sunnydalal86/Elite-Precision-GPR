@@ -35,54 +35,78 @@ const staggerContainer = {
   },
 };
 
+const navLinkClass =
+  "shrink-0 text-sm text-gray-300 transition-colors hover:text-white whitespace-nowrap";
+
+const navItems = [
+  { href: "#about", label: "About Us" },
+  { href: "#safety", label: "Safety First" },
+  { href: "#our-work", label: "Our Work" },
+  { href: "#process", label: "Process" },
+] as const;
+
 function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#ff8c5a] rounded-lg flex items-center justify-center">
+        <div className="flex items-center justify-between gap-3 h-16 md:h-20">
+          <a
+            href="#"
+            className="flex shrink-0 items-center gap-2 sm:gap-3 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[#ff6b35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] md:min-w-0"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            <div className="w-10 h-10 bg-gradient-to-br from-[#ff6b35] to-[#ff8c5a] rounded-lg flex items-center justify-center shrink-0">
               <Radar className="w-6 h-6 text-white" />
             </div>
-            <div>
+            <div className="hidden min-[380px]:block">
               <span className="text-lg font-bold tracking-tight">
                 Elite Precision
               </span>
               <span className="text-[#ff6b35] font-bold ml-1">GPR</span>
             </div>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#services"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Services
-            </a>
-            <a
-              href="#about"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#process"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Process
-            </a>
-            <a
-              href="#contact"
-              className="px-5 py-2.5 bg-[#ff6b35] hover:bg-[#ff8c5a] text-white text-sm font-semibold rounded-lg transition-all duration-200"
-            >
-              Request a Quote
-            </a>
-          </div>
-          <a
-            href="#contact"
-            className="md:hidden px-4 py-2 bg-[#ff6b35] text-white text-sm font-semibold rounded-lg"
-          >
-            Quote
           </a>
+
+          <div className="flex min-w-0 flex-1 items-center justify-end gap-2 md:gap-4">
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} className={navLinkClass}>
+                  {item.label}
+                </a>
+              ))}
+              <a
+                href="#contact"
+                className="px-5 py-2.5 bg-[#ff6b35] hover:bg-[#ff8c5a] text-white text-sm font-semibold rounded-lg transition-all duration-200"
+              >
+                Request a Quote
+              </a>
+            </div>
+
+            <div
+              className="flex md:hidden max-w-[100%] items-center gap-2 overflow-x-auto py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="shrink-0 text-xs text-gray-300 transition-colors hover:text-white"
+                >
+                  {item.label}
+                </a>
+              ))}
+              <span className="shrink-0 text-gray-600" aria-hidden>
+                |
+              </span>
+              <a
+                href="#contact"
+                className="shrink-0 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8c5a]"
+              >
+                Quote
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -304,7 +328,10 @@ function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-20 md:py-32 relative">
+    <section
+      id="about"
+      className="relative scroll-mt-24 py-20 md:scroll-mt-28 md:py-32"
+    >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div
@@ -427,7 +454,10 @@ function ServicesSection() {
   ];
 
   return (
-    <section id="services" className="py-20 md:py-32 bg-[#0d0d0d]/94 backdrop-blur-[1px]">
+    <section
+      id="services"
+      className="scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -488,7 +518,10 @@ function SafetySection() {
   ];
 
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section
+      id="safety"
+      className="relative scroll-mt-24 overflow-hidden py-20 md:scroll-mt-28 md:py-32"
+    >
       {/* Calm base so the global grid doesn&apos;t compete with orange accents */}
       <div className="absolute inset-0 z-0 bg-[#0a0a0a]/90" />
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#ff6b35]/2.5 to-transparent" />
@@ -598,7 +631,10 @@ function GallerySection() {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-[#0d0d0d]/94 backdrop-blur-[1px]">
+    <section
+      id="our-work"
+      className="scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -677,7 +713,10 @@ function ProcessSection() {
   ];
 
   return (
-    <section id="process" className="py-20 md:py-32 relative">
+    <section
+      id="process"
+      className="relative scroll-mt-24 py-20 md:scroll-mt-28 md:py-32"
+    >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -753,7 +792,7 @@ function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-20 md:py-32 bg-[#0d0d0d]/94 backdrop-blur-[1px] relative"
+      className="relative scroll-mt-24 bg-[#0d0d0d]/94 py-20 backdrop-blur-[1px] md:scroll-mt-28 md:py-32"
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
@@ -942,7 +981,6 @@ function Footer() {
                 Elite Precision
               </span>
               <span className="text-[#ff6b35] font-bold ml-1">GPR</span>
-              <span className="text-gray-600 text-sm ml-2">LLC</span>
             </div>
           </div>
 
@@ -970,7 +1008,7 @@ function Footer() {
 
         <div className="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-600">
-            © {new Date().getFullYear()} Elite Precision GPR LLC. All rights
+            © {new Date().getFullYear()} Elite Precision GPR. All rights
             reserved.
           </p>
           <p className="text-sm text-gray-600">

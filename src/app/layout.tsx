@@ -52,6 +52,7 @@ export default function RootLayout({
           aria-hidden
         />
         <div className="relative z-[1] min-h-screen">{children}</div>
+        <div className="sample-watermark" aria-hidden />
       </body>
     </html>
   );
