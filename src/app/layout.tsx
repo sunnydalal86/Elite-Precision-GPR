@@ -2,6 +2,22 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+  process.env.URL?.replace(/\/$/, "") ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
+
+const ogImage = {
+  url: "/og.png",
+  width: 1200,
+  height: 630,
+  alt: "Elite Precision GPR — Utility Locating & GPR Services",
+};
+
 const inter = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,7 +31,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://eliteprecisiongpr.com"),
+  metadataBase: new URL(siteUrl),
   title: "Elite Precision GPR | Utility Locating & GPR Services",
   description:
     "Accurate underground scanning, concrete imaging, and subsurface investigation for contractors, engineers, environmental firms, and project managers. Prevent costly utility strikes before they happen.",
@@ -34,6 +50,14 @@ export const metadata: Metadata = {
     description:
       "Prevent costly utility strikes before they happen. Professional utility locating and GPR scanning services.",
     type: "website",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Elite Precision GPR | Utility Locating & GPR Services",
+    description:
+      "Prevent costly utility strikes before they happen. Professional utility locating and GPR scanning services.",
+    images: [ogImage],
   },
 };
 
